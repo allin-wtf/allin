@@ -33,10 +33,6 @@ A provably fair gaming platform on Solana blockchain featuring Plinko and 3-Dice
 ```env
 DATABASE_URL=            # PostgreSQL connection string
 SOLANA_RPC_URL=          # Solana RPC endpoint
-SOLANA_PRIVATE_KEY=      # Base58 encoded private key for payouts
-PUMPPORTAL_API_KEY=      # PumpPortal API key (optional)
-TOKEN_CONTRACT_ADDRESS=  # Token mint address
-ADMIN_PASSWORD=          # Password for admin panel
 SESSION_SECRET=          # Express session secret
 ```
 
