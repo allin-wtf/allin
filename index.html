@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 all-in.wtf - Solana Gaming Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.87.6/lib/index.iife.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            font-weight: 900;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(255, 51, 102, 0.5);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
+            }
+        }
+
+        .logo-text {
+            background: linear-gradient(90deg, #ff3366, #ff6b35, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff3366, #ff6b35);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .wallet-btn {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .wallet-btn.connected {
+            background: linear-gradient(135deg, #00d4aa, #00b894);
+        }
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .wallet-address {
+            font-size: 0.9em;
+            color: #aaa;
+            font-family: monospace;
+        }
+
+        .wallet-balance {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* Game Sections */
+        .game-section {
+            display: none;
+        }
+
+        .game-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .game-title {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff3366, #ff6b35, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .game-description {
+            color: #aaa;
+            font-size: 1.1em;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Plinko Styles */
+        .plinko-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .plinko-board {
+            width: 100%;
+            max-width: 800px;
+            height: 700px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 0 60px rgba(0, 0, 0, 0.5),
+                0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .peg {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #ffffff 0%, #cccccc 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.6),
+                0 2px 4px rgba(0, 0, 0, 0.3);
+            transform: translate(-50%, -50%);
+        }
+
+        .ball {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle at 35% 35%, #ffd700, #ff6b35, #ff3366);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.8),
+                0 4px 8px rgba(0, 0, 0, 0.4);
+            transform: translate(-50%, -50%);
+            z-index: 100;
+        }
+
+        .multipliers-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 10px;
+        }
+
+        .multipliers {
+            display: flex;
+            justify-content: space-between;
+            gap: 2px;
+            padding: 0 10px;
+        }
+
+        .multiplier {
+            flex: 1;
+            padding: 16px 4px;
+            font-weight: 700;
+            font-size: 0.95em;
+            text-align: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 0;
+        }
+
+        .mult-110 { background: linear-gradient(135deg, #8b0000, #ff0000); color: white; }
+        .mult-41 { background: linear-gradient(135deg, #c41e3a, #ff4500); color: white; }
+        .mult-10 { background: linear-gradient(135deg, #ff4500, #ff6347); color: white; }
+        .mult-5 { background: linear-gradient(135deg, #ff6347, #ff7f50); color: white; }
+        .mult-3 { background: linear-gradient(135deg, #ff8c00, #ffa500); color: white; }
+        .mult-1_5 { background: linear-gradient(135deg, #ffa500, #ffb347); color: #222; }
+        .mult-1 { background: linear-gradient(135deg, #ffb347, #ffd700); color: #222; }
+        .mult-0_5 { background: linear-gradient(135deg, #ffd700, #ffe066); color: #222; }
+        .mult-0_3 { background: linear-gradient(135deg, #ffe066, #ffeb99); color: #222; }
+
+        .multiplier.winner {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px currentColor;
+            z-index: 10;
+        }
+
+        /* Dice Styles */
+        .dice-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .dice-display {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .dice {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5em;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .dice.rolling {
+            animation: diceRoll 0.5s ease-in-out;
+        }
+
+        @keyframes diceRoll {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg); }
+            50% { transform: rotate(180deg); }
+            75% { transform: rotate(270deg); }
+        }
+
+        .dice-sum {
+            font-size: 2em;
+            font-weight: 900;
+            color: #ffd700;
+            margin-top: 20px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.9em;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input, select {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff6b35;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #ff3366, #ff6b35);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Result Display */
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        .result.show { display: block; }
+        
+        .result.win {
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1), rgba(0, 200, 0, 0.1));
+            border: 2px solid #00ff00;
+            color: #00ff88;
+        }
+
+        .result.lose {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(200, 0, 0, 0.1));
+            border: 2px solid #ff3366;
+            color: #ff6688;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(90deg, #ff3366, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .nav-container {
+                padding: 0 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .plinko-board {
+                height: 500px;
+            }
+
+            .multiplier {
+                font-size: 0.75em;
+                padding: 12px 2px;
+            }
+
+            .dice {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5em;
+            }
+
+            .controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            input, select {
+                width: 100%;
+            }
+        }
+
+        /* Info Banner */
+        .info-banner {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="logo.jpg" alt="all-in.wtf">
+                <span class="logo-text">all-in.wtf</span>
+            </div>
+            <div class="nav-tabs">
+                <div class="nav-tab" onclick="window.location.href='index.html'">🏠 Home</div>
+                <div class="nav-tab active" onclick="switchGame('plinko')">🎯 Plinko</div>
+                <div class="nav-tab" onclick="switchGame('dice')">🎲 3-Dice</div>
+                <div class="nav-tab" onclick="window.location.href='documentation.html'">📚 Docs</div>
+            </div>
+            <div class="wallet-info" id="walletInfo">
+                <button class="wallet-btn" id="walletBtn" onclick="connectWallet()">
+                    Connect Wallet
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="info-banner" id="infoBanner">
+            ⚠️ <strong>DEMO MODE</strong> - Connect your Phantom wallet to play on Solana Devnet!
+        </div>
+
+        <!-- Plinko Game -->
+        <div id="plinko" class="game-section active">
+            <div class="game-header">
+                <h1 class="game-title">🎯 PLINKO</h1>
+                <p class="game-description">Drop the ball and watch it bounce to fortune</p>
+            </div>
+
+            <div class="game-card">
+                <div class="plinko-wrapper">
+                    <div class="plinko-board" id="plinkoBoard"></div>
+                    
+                    <div class="multipliers-container">
+                        <div class="multipliers">
+                            <div class="multiplier mult-110">110x</div>
+                            <div class="multiplier mult-41">41x</div>
+                            <div class="multiplier mult-10">10x</div>
+                            <div class="multiplier mult-5">5x</div>
+                            <div class="multiplier mult-3">3x</div>
+                            <div class="multiplier mult-1_5">1.5x</div>
+                            <div class="multiplier mult-1">1x</div>
+                            <div class="multiplier mult-0_5">0.5x</div>
+                            <div class="multiplier mult-0_3">0.3x</div>
+                            <div class="multiplier mult-0_5">0.5x</div>
+                            <div class="multiplier mult-1">1x</div>
+                            <div class="multiplier mult-1_5">1.5x</div>
+                            <div class="multiplier mult-3">3x</div>
+                            <div class="multiplier mult-5">5x</div>
+                            <div class="multiplier mult-10">10x</div>
+                            <div class="multiplier mult-41">41x</div>
+                            <div class="multiplier mult-110">110x</div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div class="input-group">
+                            <label>Bet Amount (10K - 1M tokens)</label>
+                            <input type="number" id="plinkoBet" value="10000" min="10000" max="1000000" step="1000">
+                        </div>
+                        <button class="btn" id="plinkoBtn">DROP BALL</button>
+                    </div>
+
+                    <div class="result" id="plinkoResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dice Game -->
+        <div id="dice" class="game-section">
+            <div class="game-header">
+                <h1 class="game-title">🎲 3-DICE</h1>
+                <p class="game-description">Predict the sum and roll for big wins</p>
+            </div>
+
+            <div class="game-card">
+                <div class="dice-wrapper">
+                    <div class="dice-display">
+                        <div class="dice" id="dice1">?</div>
+                        <div class="dice" id="dice2">?</div>
+                        <div class="dice" id="dice3">?</div>
+                    </div>
+                    <div class="dice-sum" id="diceSum">Sum: -</div>
+
+                    <div class="controls">
+                        <div class="input-group">
+                            <label>Bet Amount (10K - 1M tokens)</label>
+                            <input type="number" id="diceBet" value="10000" min="10000" max="1000000" step="1000">
+                        </div>
+                        <div class="input-group">
+                            <label>Prediction (3-18)</label>
+                            <input type="number" id="dicePrediction" value="10" min="3" max="18">
+                        </div>
+                        <div class="input-group">
+                            <label>Bet Type</label>
+                            <select id="diceBetType">
+                                <option value="over">Over</option>
+                                <option value="under">Under</option>
+                                <option value="exact">Exact (30x)</option>
+                            </select>
+                        </div>
+                        <button class="btn" id="diceBtn">ROLL DICE</button>
+                    </div>
+
+                    <div class="result" id="diceResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalGames">0</div>
+                <div class="stat-label">Total Games</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalWagered">0.00</div>
+                <div class="stat-label">Total Wagered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalWon">0.00</div>
+                <div class="stat-label">Total Won</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="winRate">0%</div>
+                <div class="stat-label">Win Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== BACKEND API CONFIGURATION ====================
+        const BACKEND_API = {
+            URL: 'http://localhost:3000', // Change to your server URL in production
+            API_KEY: 'your-secret-api-key-here', // Must match backend CONFIG.API_KEY
+        };
+
+        // Helper function to call backend API
+        async function callBackendAPI(endpoint, data) {
+            try {
+                const response = await fetch(`${BACKEND_API.URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': BACKEND_API.API_KEY,
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                return await response.json();
+            } catch (err) {
+                console.error('Backend API error:', err);
+                throw err;
+            }
+        }
+
+        // ==================== WALLET CONNECTION ====================
+        let wallet = null;
+        let connection = null;
+        let walletBalance = 0;
+
+        async function connectWallet() {
+            try {
+                console.log('🔌 Connect button clicked');
+                
+                // Check if Phantom exists
+                if (typeof window.solana === 'undefined') {
+                    alert('❌ Phantom not detected!\n\n' +
+                          '1. Make sure Phantom is installed\n' +
+                          '2. Refresh this page (Ctrl+Shift+R)\n' +
+                          '3. Try again\n\n' +
+                          'If still not working, open Console (F12) for details');
+                    console.error('window.solana is undefined');
+                    return;
+                }
+
+                console.log('✅ window.solana exists:', window.solana);
+                console.log('Is Phantom?', window.solana.isPhantom);
+                console.log('Is Connected?', window.solana.isConnected);
+
+                // Check if Phantom is the provider
+                if (!window.solana.isPhantom) {
+                    alert('⚠️ Detected wallet is not Phantom!\n\nPlease:\n1. Disable other wallet extensions\n2. Make sure Phantom is enabled\n3. Refresh and try again');
+                    return;
+                }
+
+                // If already connected, just use existing connection
+                if (window.solana.isConnected) {
+                    console.log('Already connected, using existing connection');
+                    wallet = window.solana.publicKey;
+                } else {
+                    console.log('Not connected yet, requesting connection...');
+                    
+                    // Request connection with timeout
+                    const connectPromise = window.solana.connect({ onlyIfTrusted: false });
+                    const timeoutPromise = new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Connection timeout')), 30000)
+                    );
+
+                    try {
+                        const response = await Promise.race([connectPromise, timeoutPromise]);
+                        console.log('✅ Connection response:', response);
+                        wallet = response.publicKey || window.solana.publicKey;
+                    } catch (connectError) {
+                        console.error('Connection promise error:', connectError);
+                        throw connectError;
+                    }
+                }
+
+                if (!wallet) {
+                    throw new Error('No public key returned after connection');
+                }
+
+                console.log('✅ Wallet connected:', wallet.toString());
+
+                // Initialize Solana connection (devnet)
+                connection = new solanaWeb3.Connection(
+                    'https://api.devnet.solana.com',
+                    'confirmed'
+                );
+
+                console.log('✅ Solana RPC connection established');
+
+                // Update UI
+                await updateWalletUI();
+
+                // Update banner
+                document.getElementById('infoBanner').innerHTML = 
+                    '✅ <strong>WALLET CONNECTED</strong> - Playing on Solana Devnet! Get free SOL: <a href="https://faucet.solana.com" target="_blank" style="color: #ffd700; text-decoration: underline;">faucet.solana.com</a>';
+
+                // Setup event listeners
+                window.solana.on('connect', (publicKey) => {
+                    console.log('🔗 Connect event:', publicKey.toString());
+                });
+
+                window.solana.on('disconnect', () => {
+                    console.log('🔌 Disconnect event');
+                    disconnectWallet();
+                });
+
+                window.solana.on('accountChanged', (publicKey) => {
+                    console.log('👤 Account changed:', publicKey?.toString());
+                    if (publicKey) {
+                        wallet = publicKey;
+                        updateWalletUI();
+                    } else {
+                        disconnectWallet();
+                    }
+                });
+
+                console.log('✅ All event listeners set up');
+
+            } catch (err) {
+                console.error('❌ Connection error:', err);
+                console.error('Error name:', err.name);
+                console.error('Error message:', err.message);
+                console.error('Error code:', err.code);
+                
+                let errorMessage = '❌ Failed to connect wallet!\n\n';
+                
+                if (err.message.includes('timeout')) {
+                    errorMessage += '⏱️ Connection timed out.\n\n' +
+                                  'Try:\n' +
+                                  '1. Check if Phantom popup is blocked\n' +
+                                  '2. Unlock Phantom wallet\n' +
+                                  '3. Click the Phantom icon to open it\n' +
+                                  '4. Try connecting again';
+                } else if (err.code === 4001 || err.message.includes('User rejected')) {
+                    errorMessage += '🚫 You rejected the connection.\n\n' +
+                                  'Click "Connect Wallet" again and approve in Phantom.';
+                } else if (err.code === -32002) {
+                    errorMessage += '⏳ Connection request already pending.\n\n' +
+                                  'Please check Phantom for a pending approval request.';
+                } else if (err.message.includes('Non ethereum enabled')) {
+                    errorMessage += '⚠️ Wrong wallet detected.\n\n' +
+                                  'Make sure:\n' +
+                                  '1. Phantom is installed\n' +
+                                  '2. Other wallets are disabled\n' +
+                                  '3. Refresh the page';
+                } else {
+                    errorMessage += `Error: ${err.message}\n\n` +
+                                  'Try:\n' +
+                                  '1. Unlock Phantom\n' +
+                                  '2. Refresh this page (Ctrl+Shift+R)\n' +
+                                  '3. Try again\n\n' +
+                                  'Check Console (F12) for details';
+                }
+                
+                alert(errorMessage);
+            }
+        }
+
+        async function disconnectWallet() {
+            if (window.solana) {
+                await window.solana.disconnect();
+            }
+            wallet = null;
+            connection = null;
+            walletBalance = 0;
+
+            const walletBtn = document.getElementById('walletBtn');
+            walletBtn.textContent = 'Connect Wallet';
+            walletBtn.classList.remove('connected');
+            walletBtn.onclick = connectWallet;
+
+            // Remove address and balance display
+            const walletInfo = document.getElementById('walletInfo');
+            const addressEl = document.getElementById('walletAddress');
+            const balanceEl = document.getElementById('walletBalance');
+            if (addressEl) addressEl.remove();
+            if (balanceEl) balanceEl.remove();
+
+            document.getElementById('infoBanner').innerHTML = 
+                '⚠️ <strong>DEMO MODE</strong> - Connect your Phantom wallet to play on Solana Devnet!';
+        }
+
+        async function updateWalletUI() {
+            if (!wallet || !connection) return;
+
+            // Update balance
+            const balance = await connection.getBalance(wallet);
+            walletBalance = balance / 1e9; // Convert lamports to SOL
+
+            // Update button
+            const walletBtn = document.getElementById('walletBtn');
+            walletBtn.textContent = 'Disconnect';
+            walletBtn.classList.add('connected');
+            walletBtn.onclick = disconnectWallet;
+
+            // Show address
+            const walletInfo = document.getElementById('walletInfo');
+            let addressEl = document.getElementById('walletAddress');
+            if (!addressEl) {
+                addressEl = document.createElement('div');
+                addressEl.id = 'walletAddress';
+                addressEl.className = 'wallet-address';
+                walletInfo.insertBefore(addressEl, walletBtn);
+            }
+            const addr = wallet.toString();
+            addressEl.textContent = addr.slice(0, 4) + '...' + addr.slice(-4);
+
+            // Show balance
+            let balanceEl = document.getElementById('walletBalance');
+            if (!balanceEl) {
+                balanceEl = document.createElement('div');
+                balanceEl.id = 'walletBalance';
+                balanceEl.className = 'wallet-balance';
+                walletInfo.insertBefore(balanceEl, walletBtn);
+            }
+            balanceEl.textContent = walletBalance.toFixed(4) + ' SOL';
+        }
+
+        // Auto-refresh balance every 10 seconds
+        setInterval(async () => {
+            if (wallet && connection) {
+                await updateWalletUI();
+            }
+        }, 10000);
+
+        // ==================== GLOBAL STATS ====================
+        let stats = {
+            totalGames: 0,
+            totalWagered: 0,
+            totalWon: 0,
+            wins: 0
+        };
+
+        function updateStats() {
+            document.getElementById('totalGames').textContent = stats.totalGames;
+            document.getElementById('totalWagered').textContent = stats.totalWagered.toFixed(4);
+            document.getElementById('totalWon').textContent = stats.totalWon.toFixed(4);
+            const winRate = stats.totalGames > 0 ? (stats.wins / stats.totalGames * 100).toFixed(1) : 0;
+            document.getElementById('winRate').textContent = winRate + '%';
+        }
+
+        // Tab Switching
+        function switchGame(game) {
+            document.querySelectorAll('.game-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(game).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // ==================== PLINKO ====================
+        function initPlinkoBoard() {
+            const board = document.getElementById('plinkoBoard');
+            if (!board) return;
+            board.innerHTML = '';
+            
+            const rows = 16;
+            const boardWidth = board.offsetWidth;
+            const boardHeight = board.offsetHeight;
+            
+            for (let row = 0; row < rows; row++) {
+                const pegsInRow = row + 3;
+                const spacing = boardWidth / (pegsInRow + 1);
+                const y = ((row + 1) / (rows + 1)) * (boardHeight - 100);
+                
+                for (let i = 1; i <= pegsInRow; i++) {
+                    const peg = document.createElement('div');
+                    peg.className = 'peg';
+                    peg.style.left = `${i * spacing}px`;
+                    peg.style.top = `${y}px`;
+                    board.appendChild(peg);
+                }
+            }
+        }
+
+        class PlinkoPhysics {
+            constructor(board) {
+                this.board = board;
+                this.rect = board.getBoundingClientRect();
+                this.gravity = 0.4;
+                this.friction = 0.98;
+                this.bounceEnergy = 0.8;
+            }
+
+            getPegs() {
+                const pegs = [];
+                const rows = 16;
+                const boardHeight = this.rect.height;
+                
+                for (let row = 0; row < rows; row++) {
+                    const pegsInRow = row + 3;
+                    const spacing = this.rect.width / (pegsInRow + 1);
+                    const y = ((row + 1) / (rows + 1)) * (boardHeight - 100);
+                    
+                    for (let i = 1; i <= pegsInRow; i++) {
+                        pegs.push({ x: i * spacing, y: y, radius: 6 });
+                    }
+                }
+                return pegs;
+            }
+
+            async drop(ball) {
+                return new Promise((resolve) => {
+                    let x = this.rect.width / 2;
+                    let y = 50;
+                    let vx = (Math.random() - 0.5) * 0.3;
+                    let vy = 0;
+                    
+                    const pegs = this.getPegs();
+                    const ballRadius = 14;
+                    let lastUpdate = Date.now();
+
+                    const animate = () => {
+                        const now = Date.now();
+                        const dt = Math.min((now - lastUpdate) / 16, 2);
+                        lastUpdate = now;
+
+                        vy += this.gravity * dt;
+                        vx *= Math.pow(this.friction, dt);
+                        vy *= Math.pow(0.999, dt);
+
+                        const maxV = 10;
+                        const speed = Math.sqrt(vx * vx + vy * vy);
+                        if (speed > maxV) {
+                            vx = (vx / speed) * maxV;
+                            vy = (vy / speed) * maxV;
+                        }
+
+                        x += vx * dt;
+                        y += vy * dt;
+
+                        for (const peg of pegs) {
+                            const dx = x - peg.x;
+                            const dy = y - peg.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            const minDist = ballRadius + peg.radius;
+
+                            if (dist < minDist) {
+                                const angle = Math.atan2(dy, dx);
+                                const targetX = peg.x + Math.cos(angle) * minDist;
+                                const targetY = peg.y + Math.sin(angle) * minDist;
+                                
+                                x = targetX;
+                                y = targetY;
+
+                                const speed = Math.sqrt(vx * vx + vy * vy);
+                                const bounceAngle = angle + (Math.random() - 0.5) * 0.8;
+                                
+                                vx = Math.cos(bounceAngle) * speed * this.bounceEnergy;
+                                vy = Math.abs(Math.sin(bounceAngle)) * speed * this.bounceEnergy;
+                                
+                                break;
+                            }
+                        }
+
+                        if (x < ballRadius) {
+                            x = ballRadius;
+                            vx = Math.abs(vx) * this.bounceEnergy;
+                        }
+                        if (x > this.rect.width - ballRadius) {
+                            x = this.rect.width - ballRadius;
+                            vx = -Math.abs(vx) * this.bounceEnergy;
+                        }
+
+                        ball.style.left = x + 'px';
+                        ball.style.top = y + 'px';
+
+                        if (y >= this.rect.height - 120) {
+                            const slot = Math.floor((x / this.rect.width) * 17);
+                            const finalSlot = Math.max(0, Math.min(16, slot));
+                            setTimeout(() => resolve(finalSlot), 500);
+                        } else {
+                            requestAnimationFrame(animate);
+                        }
+                    };
+
+                    requestAnimationFrame(animate);
+                });
+            }
+        }
+
+        document.getElementById('plinkoBtn').addEventListener('click', async () => {
+            const betAmount = parseFloat(document.getElementById('plinkoBet').value);
+            if (betAmount < 10000) {
+                alert('Minimum bet is 10,000 tokens');
+                return;
+            }
+            if (betAmount > 1000000) {
+                alert('Maximum bet is 1,000,000 tokens');
+                return;
+            }
+
+            // Check if wallet is connected
+            if (!wallet) {
+                alert('Please connect your wallet first!');
+                return;
+            }
+
+            // Check sufficient balance
+            if (walletBalance < betAmount) {
+                alert(`Insufficient balance! You have ${walletBalance.toFixed(4)} SOL. Get free devnet SOL from https://faucet.solana.com`);
+                return;
+            }
+
+            const btn = document.getElementById('plinkoBtn');
+            const result = document.getElementById('plinkoResult');
+            
+            btn.disabled = true;
+            result.classList.remove('show');
+
+            const board = document.getElementById('plinkoBoard');
+            const ball = document.createElement('div');
+            ball.className = 'ball';
+            board.appendChild(ball);
+
+            const physics = new PlinkoPhysics(board);
+            const finalSlot = await physics.drop(ball);
+
+            board.removeChild(ball);
+
+            const multipliers = [110, 41, 10, 5, 3, 1.5, 1, 0.5, 0.3, 0.5, 1, 1.5, 3, 5, 10, 41, 110];
+            const multiplier = multipliers[finalSlot];
+            
+            // Highlight slot
+            const slots = document.querySelectorAll('.multiplier');
+            slots[finalSlot].classList.add('winner');
+            setTimeout(() => slots[finalSlot].classList.remove('winner'), 2000);
+
+            // Generate game ID
+            const gameId = `plinko_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+            try {
+                // Call backend for payout
+                const backendResult = await callBackendAPI('/play/plinko', {
+                    playerAddress: wallet.toString(),
+                    betAmount,
+                    multiplier,
+                    gameId,
+                });
+
+                if (backendResult.success) {
+                    const payout = backendResult.payout || 0;
+                    const profit = payout - betAmount;
+
+                    // Show result
+                    result.classList.add('show');
+                    if (backendResult.win) {
+                        result.classList.add('win');
+                        result.classList.remove('lose');
+                        result.innerHTML = `
+                            🎉 YOU WIN!<br>
+                            ${multiplier}x Multiplier<br>
+                            Payout: ${payout.toFixed(4)} (sent to your wallet!)<br>
+                            ${backendResult.signature ? `<small>TX: ${backendResult.signature.slice(0, 8)}...</small>` : ''}
+                        `;
+                        stats.wins++;
+                        stats.totalWon += payout;
+                    } else {
+                        result.classList.add('lose');
+                        result.classList.remove('win');
+                        result.innerHTML = `
+                            ${multiplier}x Multiplier<br>
+                            Lost: ${betAmount.toFixed(4)}
+                        `;
+                    }
+
+                    // Update stats
+                    stats.totalGames++;
+                    stats.totalWagered += betAmount;
+                    updateStats();
+
+                    // Update wallet balance (simulate - will be updated on next refresh)
+                    if (backendResult.win) {
+                        walletBalance += profit;
+                    } else {
+                        walletBalance -= betAmount;
+                    }
+                    updateWalletUI();
+                } else {
+                    throw new Error(backendResult.error || 'Payout failed');
+                }
+            } catch (err) {
+                result.classList.add('show');
+                result.classList.add('lose');
+                result.classList.remove('win');
+                result.innerHTML = `
+                    ❌ Error processing game<br>
+                    ${err.message}<br>
+                    <small>Please contact support</small>
+                `;
+                console.error('Game error:', err);
+            }
+
+            btn.disabled = false;
+        });
+
+        // ==================== DICE ====================
+        document.getElementById('diceBtn').addEventListener('click', async () => {
+            const betAmount = parseFloat(document.getElementById('diceBet').value);
+            const prediction = parseInt(document.getElementById('dicePrediction').value);
+            const betType = document.getElementById('diceBetType').value;
+
+            if (betAmount < 10000) {
+                alert('Minimum bet is 10,000 tokens');
+                return;
+            }
+            if (betAmount > 1000000) {
+                alert('Maximum bet is 1,000,000 tokens');
+                return;
+            }
+
+            if (prediction < 3 || prediction > 18) {
+                alert('Prediction must be between 3 and 18');
+                return;
+            }
+
+            // Check if wallet is connected
+            if (!wallet) {
+                alert('Please connect your wallet first!');
+                return;
+            }
+
+            // Check sufficient balance
+            if (walletBalance < betAmount) {
+                alert(`Insufficient balance! You have ${walletBalance.toFixed(4)} SOL. Get free devnet SOL from https://faucet.solana.com`);
+                return;
+            }
+
+            const btn = document.getElementById('diceBtn');
+            const result = document.getElementById('diceResult');
+            
+            btn.disabled = true;
+            result.classList.remove('show');
+
+            // Roll animation
+            const dice1El = document.getElementById('dice1');
+            const dice2El = document.getElementById('dice2');
+            const dice3El = document.getElementById('dice3');
+            
+            [dice1El, dice2El, dice3El].forEach(dice => {
+                dice.classList.add('rolling');
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const dice1 = Math.floor(Math.random() * 6) + 1;
+            const dice2 = Math.floor(Math.random() * 6) + 1;
+            const dice3 = Math.floor(Math.random() * 6) + 1;
+            const sum = dice1 + dice2 + dice3;
+
+            dice1El.textContent = dice1;
+            dice2El.textContent = dice2;
+            dice3El.textContent = dice3;
+            document.getElementById('diceSum').textContent = `Sum: ${sum}`;
+
+            [dice1El, dice2El, dice3El].forEach(dice => {
+                dice.classList.remove('rolling');
+            });
+
+            let isWin = false;
+            let multiplier = 0;
+
+            if (betType === 'over') {
+                isWin = sum > prediction;
+                multiplier = isWin ? 1.8 : 0;
+            } else if (betType === 'under') {
+                isWin = sum < prediction;
+                multiplier = isWin ? 1.8 : 0;
+            } else if (betType === 'exact') {
+                isWin = sum === prediction;
+                multiplier = isWin ? 30 : 0;
+            }
+
+            const payout = betAmount * multiplier;
+            const profit = payout - betAmount;
+
+            result.classList.add('show');
+            if (isWin) {
+                result.classList.add('win');
+                result.classList.remove('lose');
+                result.innerHTML = `🎉 YOU WIN!<br>Dice: ${dice1} + ${dice2} + ${dice3} = ${sum}<br>Prediction: ${betType.toUpperCase()} ${prediction}<br>Payout: ${payout.toFixed(4)} SOL (+${profit.toFixed(4)})`;
+                stats.wins++;
+            } else {
+                result.classList.add('lose');
+                result.classList.remove('win');
+                result.innerHTML = `Dice: ${dice1} + ${dice2} + ${dice3} = ${sum}<br>Prediction: ${betType.toUpperCase()} ${prediction}<br>Lost: ${betAmount.toFixed(4)} SOL`;
+            }
+
+            stats.totalGames++;
+            stats.totalWagered += betAmount;
+            stats.totalWon += payout;
+            updateStats();
+
+            // Update wallet balance (simulate deduction in demo mode)
+            if (wallet) {
+                walletBalance -= betAmount;
+                walletBalance += payout;
+                updateWalletUI();
+            }
+
+            btn.disabled = false;
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initPlinkoBoard();
+            updateStats();
+            
+            // Check for Phantom on load with detailed logging
+            setTimeout(() => {
+                console.log('=== PHANTOM DETECTION ===');
+                console.log('window.solana exists?', typeof window.solana !== 'undefined');
+                
+                if (window.solana) {
+                    console.log('✅ Phantom detected!');
+                    console.log('Details:', {
+                        isPhantom: window.solana.isPhantom,
+                        isConnected: window.solana.isConnected,
+                        publicKey: window.solana.publicKey?.toString(),
+                        version: window.solana._version
+                    });
+                    
+                    // Check if popup blockers might be an issue
+                    console.log('💡 TIP: If connection fails, check if popup blocker is enabled');
+                    console.log('💡 TIP: You can also click the Phantom extension icon to approve manually');
+                } else {
+                    console.error('❌ Phantom NOT detected!');
+                    console.log('Solutions:');
+                    console.log('1. Install Phantom from https://phantom.app');
+                    console.log('2. Enable Phantom extension');
+                    console.log('3. Refresh this page (Ctrl+Shift+R)');
+                    console.log('4. Make sure no other wallet is overriding window.solana');
+                }
+                console.log('========================');
+            }, 500);
+            
+            // Add helpful message about popup blockers
+            const infoBanner = document.getElementById('infoBanner');
+            const originalHTML = infoBanner.innerHTML;
+            
+            // Show popup blocker tip after a few seconds
+            setTimeout(() => {
+                if (!wallet) { // Only if not connected
+                    infoBanner.innerHTML = originalHTML + 
+                        '<br><small>💡 Tip: If Phantom doesn\'t pop up when connecting, check your popup blocker or click the Phantom extension icon manually</small>';
+                }
+            }, 3000);
+        });
+        
+        window.addEventListener('resize', initPlinkoBoard);
+    </script>
+</body>
+</html>

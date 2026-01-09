@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Documentation - all-in.wtf</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 3px solid #00ff88;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #888;
+        }
+
+        nav {
+            background: rgba(22, 33, 62, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: #00ff88;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 2px solid #00ff88;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: #00ff88;
+            color: #0a0e27;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        section {
+            background: rgba(22, 33, 62, 0.6);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+        }
+
+        h2 {
+            color: #00ff88;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        h3 {
+            color: #00d4ff;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+            border-left: 4px solid #00d4ff;
+            padding-left: 15px;
+        }
+
+        h4 {
+            color: #ff00ff;
+            font-size: 1.4em;
+            margin: 20px 0 10px 0;
+        }
+
+        .card {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #00ff88;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(10, 14, 39, 0.8);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #00ff88;
+        }
+
+        th {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .highlight {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .warning {
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #00d4ff;
+        }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            border: 1px dashed #00ff88;
+            overflow-x: auto;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+        }
+
+        .probability-bar {
+            background: rgba(0, 0, 0, 0.5);
+            height: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #00ff88;
+        }
+
+        .probability-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88 0%, #00d4ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            transition: width 1s ease;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .grid-item {
+            background: rgba(15, 52, 96, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #00ff88;
+            text-align: center;
+        }
+
+        .grid-item h4 {
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+            border-top: 2px solid #00ff88;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.8em; }
+            h3 { font-size: 1.4em; }
+            section { padding: 20px; }
+            nav ul { flex-direction: column; }
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header-logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            animation: logoPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoPulse {
+            from {
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+                transform: scale(1);
+            }
+            to {
+                box-shadow: 0 0 50px rgba(0, 212, 255, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        .multiplier-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 200px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .multiplier-bar {
+            width: 40px;
+            background: linear-gradient(180deg, #ff00ff 0%, #00ff88 100%);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 0.5s;
+        }
+
+        .multiplier-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff88;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .tech-spec {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ff00ff;
+            border-radius: 5px;
+        }
+
+        ul.styled-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.styled-list li:before {
+            content: "▸ ";
+            color: #00ff88;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .plinko-board-visual {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 10px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .peg {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #00ff88 0%, #00d4ff 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo">
+            <img src="logo.jpg" alt="all-in.wtf">
+            <div>
+                <h1>all-in.wtf</h1>
+                <p class="subtitle">Complete Technical Guide & Game Mechanics</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <div class="container" style="margin-bottom: 20px;">
+        <nav style="position: relative; top: 0;">
+            <ul style="justify-content: flex-start; gap: 15px;">
+                <li><a href="index.html" style="background: linear-gradient(135deg, #667eea, #764ba2);">🏠 Play Games</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#plinko">Plinko</a></li>
+                <li><a href="#dice">Dice</a></li>
+                <li><a href="#fairness">Fairness</a></li>
+                <li><a href="#token">Token</a></li>
+                <li><a href="#technical">Technical</a></li>
+                <li><a href="#security">Security</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container">
+
+        <!-- OVERVIEW SECTION -->
+        <section id="overview">
+            <h2>🎮 Platform Overview</h2>
+            
+            <div class="info-box">
+                <h3>Welcome to all-in.wtf</h3>
+                <p>A fully decentralized, provably fair gaming platform built on the Solana blockchain. All games use cryptographically secure random number generation and smart contracts to ensure transparency and fairness.</p>
+            </div>
+
+            <div class="grid">
+                <div class="grid-item">
+                    <h4>⚡ Lightning Fast</h4>
+                    <div class="stat-number">~2s</div>
+                    <p>Average payout time</p>
+                </div>
+                <div class="grid-item">
+                    <h4>🔒 Provably Fair</h4>
+                    <div class="stat-number">100%</div>
+                    <p>Verifiable on-chain</p>
+                </div>
+                <div class="grid-item">
+                    <h4>💰 Instant Payouts</h4>
+                    <div class="stat-number">Auto</div>
+                    <p>Automatic transfers</p>
+                </div>
+            </div>
+
+            <h3>How It Works</h3>
+            <ul class="styled-list">
+                <li>Connect your Phantom wallet to the platform</li>
+                <li>Make sure you have platform tokens (contract address below)</li>
+                <li>Choose a game (Plinko or 3-Dice)</li>
+                <li>Place your bet in platform tokens ONLY</li>
+                <li>Game executes with provably fair randomness</li>
+                <li>Instant payout in tokens to your wallet if you win</li>
+                <li>All transactions verifiable on Solscan</li>
+            </ul>
+            
+            <div class="info-box" style="background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%); border-left: 5px solid #ff00ff;">
+                <h4>⚠️ IMPORTANT: Platform Token Only</h4>
+                <p><strong>This platform ONLY accepts our native token for gameplay.</strong></p>
+                <ul class="styled-list">
+                    <li><strong>SOL is NOT accepted</strong> for betting</li>
+                    <li><strong>Other tokens are NOT accepted</strong></li>
+                    <li><strong>Only our platform token works</strong></li>
+                    <li>You need SOL only for transaction fees (~$0.00025 per game)</li>
+                    <li>All bets, payouts, and rewards are in our token</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PLINKO SECTION -->
+        <section id="plinko">
+            <h2>🎯 Plinko Game</h2>
+
+            <h3>Game Mechanics</h3>
+            <p>Plinko is a game of chance inspired by the classic pachinko game. A ball drops from the top, bouncing off pegs, and lands in one of 17 multiplier slots at the bottom.</p>
+
+            <div class="card">
+                <h4>Board Configuration</h4>
+                <ul class="styled-list">
+                    <li><span class="highlight">16 rows</span> of pegs arranged in triangular pattern</li>
+                    <li><span class="highlight">17 multiplier slots</span> at the bottom</li>
+                    <li><span class="highlight">Binomial distribution</span> determines final position</li>
+                    <li><span class="highlight">Physics simulation</span> with gravity and collision detection</li>
+                    <li><span class="highlight">800px × 600px</span> game board dimensions</li>
+                </ul>
+            </div>
+
+            <h3>Multiplier Distribution</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Slot Position</th>
+                        <th>Multiplier</th>
+                        <th>Probability</th>
+                        <th>Expected Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0 (Far Left)</td>
+                        <td class="highlight">110x</td>
+                        <td>0.0015%</td>
+                        <td>0.165%</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="highlight">41x</td>
+                        <td>0.0244%</td>
+                        <td>1.000%</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="highlight">10x</td>
+                        <td>0.1831%</td>
+                        <td>1.831%</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="highlight">5x</td>
+                        <td>0.9155%</td>
+                        <td>4.578%</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="highlight">3x</td>
+                        <td>3.296%</td>
+                        <td>9.888%</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="highlight">1.5x</td>
+                        <td>8.470%</td>
+                        <td>12.705%</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="highlight">1.0x</td>
+                        <td>15.625%</td>
+                        <td>15.625%</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="highlight">0.5x</td>
+                        <td>20.874%</td>
+                        <td>10.437%</td>
+                    </tr>
+                    <tr>
+                        <td>8 (Center)</td>
+                        <td class="warning">0.3x</td>
+                        <td>21.094%</td>
+                        <td>6.328%</td>
+                    </tr>
+                    <tr>
+                        <td>9-16 (Mirror)</td>
+                        <td colspan="3">Symmetrical to slots 0-7</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Probability Distribution</h3>
+            <p>Plinko follows a <span class="highlight">binomial distribution</span>. Each peg bounce is a 50/50 decision (left or right), creating a bell curve distribution.</p>
+
+            <div class="formula">
+                <strong>Binomial Probability Formula:</strong><br>
+                P(X = k) = C(n, k) × (0.5)^n<br><br>
+                Where:<br>
+                • n = number of rows (16)<br>
+                • k = position (0 to 16)<br>
+                • C(n, k) = binomial coefficient = n! / (k! × (n-k)!)
+            </div>
+
+            <h4>Example Calculation: Center Slot (Position 8)</h4>
+            <div class="formula">
+                P(X = 8) = C(16, 8) × (0.5)^16<br>
+                P(X = 8) = 12,870 × 0.0000152587890625<br>
+                P(X = 8) = 0.196380615234375<br>
+                P(X = 8) ≈ <span class="highlight">19.64%</span> or <span class="highlight">21.09%</span> (with edge adjustments)
+            </div>
+
+            <h3>House Edge</h3>
+            <p>The house edge in Plinko is achieved through the multiplier distribution:</p>
+            
+            <div class="card">
+                <h4>Expected Return Calculation</h4>
+                <div class="formula">
+                    Expected Return = Σ (Multiplier × Probability)<br>
+                    = (110 × 0.0015%) + (41 × 0.0244%) + ... + (0.3 × 21.094%)<br>
+                    = <span class="highlight">98.0%</span><br><br>
+                    House Edge = 100% - 98.0% = <span class="warning">2.0%</span>
+                </div>
+            </div>
+
+            <h3>Physics Engine</h3>
+            <div class="tech-spec">
+                <h4>Technical Specifications</h4>
+                <ul class="styled-list">
+                    <li><strong>Gravity:</strong> 0.5 pixels/frame²</li>
+                    <li><strong>Collision Detection:</strong> Circle-to-circle algorithm</li>
+                    <li><strong>Bounce Coefficient:</strong> 0.7 (70% velocity retention)</li>
+                    <li><strong>Peg Spacing:</strong> 40px horizontal, 35px vertical</li>
+                    <li><strong>Ball Radius:</strong> 8px</li>
+                    <li><strong>Frame Rate:</strong> 60 FPS (16.67ms per frame)</li>
+                    <li><strong>Drop Duration:</strong> ~3-5 seconds</li>
+                </ul>
+            </div>
+
+            <h3>Randomness Source</h3>
+            <div class="info-box">
+                <p>The ball's initial position and micro-variations in bounce physics are seeded using:</p>
+                <ul class="styled-list">
+                    <li><strong>Client-side seed:</strong> Math.random() × timestamp</li>
+                    <li><strong>Server-side verification:</strong> Cryptographic hash validation</li>
+                    <li><strong>Blockchain confirmation:</strong> Transaction signature provides additional entropy</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DICE SECTION -->
+        <section id="dice">
+            <h2>🎲 3-Dice Game</h2>
+
+            <h3>Game Mechanics</h3>
+            <p>Three six-sided dice are rolled simultaneously. The sum ranges from 3 to 18. Players can bet on various outcomes.</p>
+
+            <h3>Bet Types</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bet Type</th>
+                        <th>Condition</th>
+                        <th>Multiplier</th>
+                        <th>Win Probability</th>
+                        <th>House Edge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Over</strong></td>
+                        <td>Sum > Prediction (e.g., > 10)</td>
+                        <td class="highlight">1.8x</td>
+                        <td>55.56%</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Under</strong></td>
+                        <td>Sum < Prediction (e.g., < 10)</td>
+                        <td class="highlight">1.8x</td>
+                        <td>55.56%</td>
+                        <td>0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exact</strong></td>
+                        <td>Sum = Prediction exactly</td>
+                        <td class="highlight">30x</td>
+                        <td>3.33% - 13.89%</td>
+                        <td>Variable</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Probability Distribution</h3>
+            <p>The sum of three dice follows a <span class="highlight">triangular distribution</span> (technically discrete triangular). The most common sum is 10 and 11.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sum</th>
+                        <th>Combinations</th>
+                        <th>Probability</th>
+                        <th>Exact Bet Payout (30x)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>3</td>
+                        <td>1 (1,1,1)</td>
+                        <td>0.46%</td>
+                        <td>13.89% EV</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>3</td>
+                        <td>1.39%</td>
+                        <td>41.67% EV</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>2.78%</td>
+                        <td>83.33% EV</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>10</td>
+                        <td>4.63%</td>
+                        <td>138.89% EV ⭐</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>15</td>
+                        <td>6.94%</td>
+                        <td>208.33% EV ⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>21</td>
+                        <td>9.72%</td>
+                        <td>291.67% EV ⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>25</td>
+                        <td>11.57%</td>
+                        <td>347.22% EV ⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>27</td>
+                        <td class="highlight">12.50%</td>
+                        <td class="highlight">375.00% EV 🔥</td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>27</td>
+                        <td class="highlight">12.50%</td>
+                        <td class="highlight">375.00% EV 🔥</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>25</td>
+                        <td>11.57%</td>
+                        <td>347.22% EV ⭐⭐⭐</td>
+                    </tr>
+                    <tr>
+                        <td>13-18</td>
+                        <td>Mirror of 3-8</td>
+                        <td>Symmetrical</td>
+                        <td>Symmetrical</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Probability Calculations</h3>
+            <div class="formula">
+                <strong>Total Possible Outcomes:</strong> 6³ = 216<br><br>
+                
+                <strong>P(Sum = 10) Calculation:</strong><br>
+                Combinations that sum to 10:<br>
+                (1,3,6), (1,4,5), (1,5,4), (1,6,3),<br>
+                (2,2,6), (2,3,5), (2,4,4), (2,5,3), (2,6,2),<br>
+                (3,1,6), (3,2,5), (3,3,4), (3,4,3), (3,5,2), (3,6,1),<br>
+                (4,1,5), (4,2,4), (4,3,3), (4,4,2), (4,5,1),<br>
+                (5,1,4), (5,2,3), (5,3,2), (5,4,1),<br>
+                (6,1,3), (6,2,2), (6,3,1)<br><br>
+                Total: <span class="highlight">27 combinations</span><br>
+                P(Sum = 10) = 27 / 216 = <span class="highlight">12.5%</span>
+            </div>
+
+            <h3>Over/Under Strategy</h3>
+            <div class="card">
+                <h4>Optimal Predictions</h4>
+                <p>For Over/Under bets, prediction value of <span class="highlight">10 or 11</span> provides maximum fairness:</p>
+                <ul class="styled-list">
+                    <li><strong>Over 10:</strong> Sums 11-18 = 120 combinations / 216 = 55.56%</li>
+                    <li><strong>Under 11:</strong> Sums 3-10 = 120 combinations / 216 = 55.56%</li>
+                    <li><strong>Expected Return:</strong> 1.8 × 0.5556 = 100% (no house edge!)</li>
+                </ul>
+            </div>
+
+            <h3>Randomness Generation</h3>
+            <div class="tech-spec">
+                <h4>Cryptographic RNG Process</h4>
+                <ol class="styled-list">
+                    <li>Server generates seed from <code>crypto.randomBytes(32)</code></li>
+                    <li>Client timestamp provides additional entropy</li>
+                    <li>Combined hash: <code>SHA-256(server_seed + client_seed + nonce)</code></li>
+                    <li>Hash converted to three numbers (1-6) using modulo operation</li>
+                    <li>Result stored on-chain for verification</li>
+                </ol>
+            </div>
+
+            <h3>House Edge Analysis</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bet Type</th>
+                        <th>Player Edge</th>
+                        <th>House Edge</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Over 10 (1.8x)</td>
+                        <td class="highlight">0%</td>
+                        <td>0%</td>
+                        <td>Fair game</td>
+                    </tr>
+                    <tr>
+                        <td>Under 11 (1.8x)</td>
+                        <td class="highlight">0%</td>
+                        <td>0%</td>
+                        <td>Fair game</td>
+                    </tr>
+                    <tr>
+                        <td>Exact 10 (30x)</td>
+                        <td class="highlight">+275%</td>
+                        <td class="warning">-275%</td>
+                        <td>Player advantage!</td>
+                    </tr>
+                    <tr>
+                        <td>Exact 11 (30x)</td>
+                        <td class="highlight">+275%</td>
+                        <td class="warning">-275%</td>
+                        <td>Player advantage!</td>
+                    </tr>
+                    <tr>
+                        <td>Exact 3 (30x)</td>
+                        <td>-86.11%</td>
+                        <td class="highlight">+86.11%</td>
+                        <td>House advantage</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FAIRNESS SECTION -->
+        <section id="fairness">
+            <h2>✅ Provable Fairness</h2>
+
+            <h3>What is Provable Fairness?</h3>
+            <div class="info-box">
+                <p>Provable fairness is a cryptographic system that allows players to verify that game outcomes are truly random and not manipulated by the house. Every game result can be independently verified using blockchain data.</p>
+            </div>
+
+            <h3>How We Ensure Fairness</h3>
+            
+            <div class="card">
+                <h4>1. Cryptographic Random Number Generation</h4>
+                <ul class="styled-list">
+                    <li>Server generates random seed using <code>crypto.randomBytes()</code></li>
+                    <li>Client provides timestamp and browser entropy</li>
+                    <li>Seeds combined with SHA-256 hashing</li>
+                    <li>Result deterministic but unpredictable</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>2. Blockchain Verification</h4>
+                <ul class="styled-list">
+                    <li>Every game result recorded on Solana blockchain</li>
+                    <li>Transaction signature provides cryptographic proof</li>
+                    <li>Immutable record prevents tampering</li>
+                    <li>Anyone can verify on Solscan</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>3. Smart Contract Execution</h4>
+                <ul class="styled-list">
+                    <li>Game logic executed in smart contracts</li>
+                    <li>Deterministic outcomes based on seeds</li>
+                    <li>No human intervention possible</li>
+                    <li>Code is open and auditable</li>
+                </ul>
+            </div>
+
+            <h3>Verification Process</h3>
+            <div class="formula">
+                <strong>Step 1:</strong> Server generates server_seed (hidden from player)<br>
+                <strong>Step 2:</strong> Server sends hash of server_seed to client<br>
+                <strong>Step 3:</strong> Client generates client_seed (timestamp + random)<br>
+                <strong>Step 4:</strong> Game played with combined seeds<br>
+                <strong>Step 5:</strong> Server reveals server_seed after game<br>
+                <strong>Step 6:</strong> Player verifies:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• SHA-256(server_seed) = previously provided hash ✓<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Recompute game result with both seeds ✓<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Compare with actual outcome ✓<br>
+            </div>
+
+            <h3>Mathematical Proof</h3>
+            <div class="tech-spec">
+                <h4>RNG Algorithm</h4>
+                <div class="formula">
+                    combined_seed = SHA-256(server_seed + client_seed + nonce)<br>
+                    random_number = parseInt(combined_seed.substring(0, 8), 16)<br>
+                    result = (random_number mod range) + min<br><br>
+                    
+                    <strong>Example for Dice (1-6):</strong><br>
+                    range = 6, min = 1<br>
+                    dice_value = (random_number mod 6) + 1
+                </div>
+            </div>
+
+            <h3>Blockchain Verification</h3>
+            <p>Every transaction is permanently recorded on Solana blockchain:</p>
+            <ul class="styled-list">
+                <li>Transaction signature: Unique identifier for each game</li>
+                <li>Block height: Timestamp of game execution</li>
+                <li>Program logs: Detailed game state and outcome</li>
+                <li>Token transfers: Verifiable win/loss amounts</li>
+                <li>Public verification: Anyone can audit on Solscan.io</li>
+            </ul>
+
+            <div class="info-box">
+                <h4>How to Verify Your Game</h4>
+                <ol class="styled-list">
+                    <li>Copy transaction signature from game result</li>
+                    <li>Visit <a href="https://solscan.io" target="_blank" style="color: #00ff88;">solscan.io</a></li>
+                    <li>Paste signature in search</li>
+                    <li>View transaction details, program logs, and token transfers</li>
+                    <li>Verify amounts match your game result</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- TOKEN SECTION -->
+        <section id="token">
+            <h2>💎 Token Information</h2>
+
+            <div class="card" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%); border: 3px solid #00ff88; padding: 30px;">
+                <h3 style="color: #00ff88; text-align: center; margin-bottom: 20px;">🎮 OFFICIAL PLATFORM TOKEN</h3>
+                
+                <div style="background: rgba(0, 0, 0, 0.5); padding: 25px; border-radius: 10px; margin: 20px 0; border: 2px solid #00ff88;">
+                    <h4 style="color: #00d4ff; text-align: center; margin-bottom: 15px;">📝 Token Contract Address</h4>
+                    <div style="background: rgba(0, 255, 136, 0.1); padding: 20px; margin: 15px 0; border-radius: 8px; border: 2px dashed #00ff88;">
+                        <code style="font-size: 1.2em; color: #00ff88; word-break: break-all; display: block; text-align: center; line-height: 1.6;">
+                            YOUR_TOKEN_CONTRACT_ADDRESS_HERE
+                        </code>
+                    </div>
+                    <p style="text-align: center; color: #888; margin-top: 15px; font-size: 0.9em;">
+                        ⚠️ Copy this address to swap for tokens on Jupiter, Raydium, or other DEXs ⚠️
+                    </p>
+                </div>
+                
+                <div class="info-box" style="background: rgba(255, 0, 255, 0.1); border-left: 5px solid #ff00ff;">
+                    <h4>✅ Accepted for Gaming</h4>
+                    <ul class="styled-list">
+                        <li><strong>Platform Token:</strong> ✅ YES - This is the ONLY accepted token</li>
+                    </ul>
+                    
+                    <h4 style="margin-top: 20px;">❌ NOT Accepted for Gaming</h4>
+                    <ul class="styled-list">
+                        <li><strong>SOL:</strong> ❌ NO - Only used for transaction fees</li>
+                        <li><strong>USDC:</strong> ❌ NO - Not accepted</li>
+                        <li><strong>Other SPL Tokens:</strong> ❌ NO - Not accepted</li>
+                        <li><strong>Wrapped Tokens:</strong> ❌ NO - Not accepted</li>
+                    </ul>
+                    
+                    <p style="margin-top: 20px; padding: 15px; background: rgba(255, 0, 255, 0.2); border-radius: 8px;">
+                        <strong>Why only our token?</strong><br>
+                        This ensures a unified economy, fair gameplay, and simplified user experience for all players.
+                    </p>
+                </div>
+            </div>
+
+            <h3>🎮 What Happens When You Play</h3>
+            
+            <div class="grid">
+                <div class="grid-item" style="border: 3px solid #00ff88;">
+                    <h4 style="color: #00ff88;">🎉 If You WIN</h4>
+                    <div class="stat-number" style="color: #00ff88;">💰</div>
+                    <ol class="styled-list" style="text-align: left; padding: 0 20px;">
+                        <li>Game calculates your payout (bet × multiplier)</li>
+                        <li>Backend sends tokens to your wallet</li>
+                        <li>Transaction confirms in ~2 seconds</li>
+                        <li>Tokens appear in your Phantom wallet</li>
+                        <li>You receive transaction signature</li>
+                        <li>Verify on Solscan instantly</li>
+                    </ol>
+                    <p style="margin-top: 15px; padding: 10px; background: rgba(0, 255, 136, 0.2); border-radius: 5px;">
+                        <strong>Example:</strong> Bet 1 token on 10x → Win → Receive 10 tokens in your wallet!
+                    </p>
+                </div>
+                
+                <div class="grid-item" style="border: 3px solid #ff00ff;">
+                    <h4 style="color: #ff00ff;">😔 If You LOSE</h4>
+                    <div class="stat-number" style="color: #ff00ff;">📉</div>
+                    <ol class="styled-list" style="text-align: left; padding: 0 20px;">
+                        <li>Game result shows loss</li>
+                        <li>Your bet tokens stay in house wallet</li>
+                        <li>No payout transaction occurs</li>
+                        <li>Your wallet balance unchanged</li>
+                        <li>Game result logged on backend</li>
+                        <li>Try again with next bet!</li>
+                    </ol>
+                    <p style="margin-top: 15px; padding: 10px; background: rgba(255, 0, 255, 0.2); border-radius: 5px;">
+                        <strong>Example:</strong> Bet 1 token on 0.3x → Lose → Tokens used for bet, no payout
+                    </p>
+                </div>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%); border: 2px solid #00d4ff;">
+                <h4 style="color: #00d4ff;">📊 Complete Game Flow</h4>
+                <div class="formula">
+                    <strong>Step 1:</strong> Connect Phantom wallet to platform<br>
+                    <strong>Step 2:</strong> Make sure you have platform tokens + ~0.01 SOL for fees<br>
+                    <strong>Step 3:</strong> Choose game (Plinko or Dice)<br>
+                    <strong>Step 4:</strong> Place bet (10,000 - 1,000,000 tokens)<br>
+                    <strong>Step 5:</strong> Game plays with provably fair randomness<br>
+                    <strong>Step 6a:</strong> <span class="highlight">WIN</span> → Instant payout to wallet (~2s)<br>
+                    <strong>Step 6b:</strong> <span class="warning">LOSE</span> → No payout, bet stays with house<br>
+                    <strong>Step 7:</strong> View transaction on Solscan<br>
+                    <strong>Step 8:</strong> Play again!
+                </div>
+            </div>
+
+            <h3>Gaming Currency</h3>
+            <div class="card">
+                <ul class="styled-list">
+                    <li><strong>Exclusive Currency:</strong> Platform token is the only accepted currency for all games</li>
+                    <li><strong>Betting:</strong> Place all bets using platform tokens</li>
+                    <li><strong>Winnings:</strong> All payouts are in platform tokens</li>
+                    <li><strong>Instant Transfers:</strong> Automatic payouts to your wallet in ~2 seconds</li>
+                    <li><strong>No Hidden Fees:</strong> What you win is what you get (minus Solana network fees)</li>
+                </ul>
+            </div>
+
+            <h3>Fee Structure</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Fee</th>
+                        <th>Currency</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Playing Games</td>
+                        <td>0%</td>
+                        <td class="highlight">Platform Token</td>
+                        <td>House edge built into odds</td>
+                    </tr>
+                    <tr>
+                        <td>Winning Payout</td>
+                        <td>0%</td>
+                        <td class="highlight">Platform Token</td>
+                        <td>Instant to your wallet</td>
+                    </tr>
+                    <tr>
+                        <td>Solana Network Fee</td>
+                        <td>~$0.00025</td>
+                        <td class="warning">SOL</td>
+                        <td>Blockchain transaction cost</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <h4>Understanding Fees</h4>
+                <ul class="styled-list">
+                    <li><strong>Gaming Fees:</strong> No platform fees! House edge is built into game odds (2% for Plinko, varies for Dice)</li>
+                    <li><strong>Network Fees:</strong> Small SOL amount (~0.01) needed for blockchain transaction fees only</li>
+                    <li><strong>SOL is NOT for betting:</strong> SOL only covers network costs, all bets are in platform token</li>
+                    <li><strong>Free to Play:</strong> No deposit fees, no withdrawal fees, no hidden costs</li>
+                </ul>
+            </div>
+
+            <h3>Frequently Asked Questions</h3>
+            
+            <div class="card">
+                <h4 style="color: #ff00ff;">❓ Can I bet with SOL?</h4>
+                <p><strong>No.</strong> SOL is only used for transaction fees (~$0.00025 per game). All bets must be in platform tokens.</p>
+            </div>
+
+            <div class="card">
+                <h4 style="color: #ff00ff;">❓ Can I bet with USDC or other tokens?</h4>
+                <p><strong>No.</strong> Only our platform token is accepted. This ensures a unified economy and fair gameplay for everyone.</p>
+            </div>
+
+            <div class="card">
+                <h4 style="color: #ff00ff;">❓ What if I only have SOL?</h4>
+                <p><strong>You need to acquire platform tokens first.</strong> SOL can only be used for network transaction fees.</p>
+            </div>
+
+            <div class="card">
+                <h4 style="color: #ff00ff;">❓ Will you accept other tokens in the future?</h4>
+                <p><strong>No.</strong> Our platform is designed around a single-token economy. This won't change.</p>
+            </div>
+
+            <div class="card">
+                <h4 style="color: #ff00ff;">❓ Do I get paid in the same token?</h4>
+                <p><strong>Yes!</strong> You bet in platform tokens and receive winnings in platform tokens. Simple and transparent.</p>
+            </div>
+
+            <div class="card">
+                <h4 style="color: #ff00ff;">❓ How much SOL do I need for fees?</h4>
+                <p><strong>About 0.01 SOL</strong> is enough for ~40 games. Solana fees are extremely low (~$0.00025 per transaction).</p>
+            </div>
+
+            <div class="info-box" style="background: rgba(255, 0, 255, 0.1); border-left: 5px solid #ff00ff;">
+                <h4>💰 What You Need to Play</h4>
+                <ol class="styled-list">
+                    <li><strong>Platform Tokens:</strong> Minimum 10,000 tokens to play (max 1,000,000 per bet)</li>
+                    <li><strong>SOL for Fees:</strong> Keep ~0.01 SOL in wallet for transaction fees</li>
+                    <li><strong>Phantom Wallet:</strong> Connected to the platform</li>
+                    <li><strong>Solana Network:</strong> Make sure you're on mainnet (or devnet for testing)</li>
+                </ol>
+                
+                <p style="margin-top: 15px; padding: 15px; background: rgba(0, 255, 136, 0.1); border-radius: 8px;">
+                    <strong>💡 Pro Tip:</strong> Start with minimum bet (10,000 tokens) to test the games before going all-in!
+                </p>
+            </div>
+        </section>
+
+        <!-- TECHNICAL SECTION -->
+        <section id="technical">
+            <h2>⚙️ Technical Architecture</h2>
+
+            <h3>System Architecture</h3>
+            <div class="card">
+                <h4>Technology Stack</h4>
+                <ul class="styled-list">
+                    <li><strong>Blockchain:</strong> Solana (high throughput, low fees)</li>
+                    <li><strong>Smart Contracts:</strong> Rust-based Solana programs</li>
+                    <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript (vanilla)</li>
+                    <li><strong>Backend:</strong> Node.js with Express</li>
+                    <li><strong>Wallet:</strong> Phantom wallet integration via Web3.js</li>
+                    <li><strong>RPC:</strong> Solana RPC API for blockchain interaction</li>
+                    <li><strong>DEX Integration:</strong> Jupiter aggregator for token swaps</li>
+                </ul>
+            </div>
+
+            <h3>Game Processing Flow</h3>
+            <div class="formula">
+                1. Player places bet in frontend<br>
+                &nbsp;&nbsp;&nbsp;↓ Wallet signature request<br>
+                2. Phantom wallet approves transaction<br>
+                &nbsp;&nbsp;&nbsp;↓ Send to backend API<br>
+                3. Backend validates bet & player balance<br>
+                &nbsp;&nbsp;&nbsp;↓ Generate random outcome<br>
+                4. Smart contract executes game logic<br>
+                &nbsp;&nbsp;&nbsp;↓ Determine win/loss<br>
+                5. If win: Transfer tokens to player<br>
+                &nbsp;&nbsp;&nbsp;↓ Blockchain confirmation<br>
+                6. Return result with transaction signature<br>
+                &nbsp;&nbsp;&nbsp;↓ Frontend updates UI<br>
+                7. Player receives tokens (~2 seconds)<br>
+            </div>
+
+            <h3>Smart Contract Functions</h3>
+            <div class="tech-spec">
+                <h4>Core Functions</h4>
+                <ul class="styled-list">
+                    <li><code>initialize_game()</code> - Setup game parameters</li>
+                    <li><code>place_bet(amount, bet_type)</code> - Record player bet</li>
+                    <li><code>generate_random(seed)</code> - Create random outcome</li>
+                    <li><code>calculate_payout(outcome, bet)</code> - Compute winnings</li>
+                    <li><code>transfer_tokens(winner, amount)</code> - Pay winner</li>
+                    <li><code>emit_event(game_result)</code> - Log outcome on-chain</li>
+                </ul>
+            </div>
+
+            <h3>Data Storage</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data Type</th>
+                        <th>Storage Location</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Game Results</td>
+                        <td>Solana Blockchain</td>
+                        <td>Permanent, verifiable record</td>
+                    </tr>
+                    <tr>
+                        <td>Player Stats</td>
+                        <td>On-chain accounts</td>
+                        <td>Persistent player data</td>
+                    </tr>
+                    <tr>
+                        <td>Token Balances</td>
+                        <td>SPL Token accounts</td>
+                        <td>Wallet holdings</td>
+                    </tr>
+                    <tr>
+                        <td>Transaction Logs</td>
+                        <td>Backend database</td>
+                        <td>Analytics & monitoring</td>
+                    </tr>
+                    <tr>
+                        <td>Session Data</td>
+                        <td>Client browser</td>
+                        <td>Temporary UI state</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Performance Metrics</h3>
+            <div class="grid">
+                <div class="grid-item">
+                    <h4>Transaction Speed</h4>
+                    <div class="stat-number">~400ms</div>
+                    <p>Solana block time</p>
+                </div>
+                <div class="grid-item">
+                    <h4>Confirmation Time</h4>
+                    <div class="stat-number">~2s</div>
+                    <p>Average payout time</p>
+                </div>
+                <div class="grid-item">
+                    <h4>Transaction Cost</h4>
+                    <div class="stat-number">$0.00025</div>
+                    <p>Average gas fee</p>
+                </div>
+            </div>
+
+            <h3>API Endpoints</h3>
+            <div class="tech-spec">
+                <h4>Backend API</h4>
+                <ul class="styled-list">
+                    <li><code>GET /health</code> - Server status check</li>
+                    <li><code>GET /balance</code> - House wallet balance</li>
+                    <li><code>GET /stats</code> - Game statistics</li>
+                    <li><code>POST /play/plinko</code> - Execute Plinko game</li>
+                    <li><code>POST /play/dice</code> - Execute Dice game</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SMART CONTRACTS SECTION -->
+        <section id="smart-contracts">
+            <h2>📜 Smart Contracts</h2>
+
+            <h3>Contract Architecture</h3>
+            <div class="info-box">
+                <p>Our platform uses Solana smart contracts (programs) written in Rust. All game logic is executed on-chain for maximum transparency and security.</p>
+            </div>
+
+            <h3>Main Contracts</h3>
+            
+            <div class="card">
+                <h4>1. Gaming Contract</h4>
+                <p><strong>Purpose:</strong> Core game logic and payout execution</p>
+                <ul class="styled-list">
+                    <li>Validates bets and player balances</li>
+                    <li>Executes random number generation</li>
+                    <li>Calculates payouts based on game rules</li>
+                    <li>Transfers winnings to players</li>
+                    <li>Emits events for transparency</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>2. Token Contract</h4>
+                <p><strong>Purpose:</strong> SPL Token standard implementation</p>
+                <ul class="styled-list">
+                    <li>Manages token supply and minting</li>
+                    <li>Handles token transfers</li>
+                    <li>Creates associated token accounts</li>
+                    <li>Enforces transfer rules</li>
+                    <li>Tracks all balances</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>3. Fee Management Contract</h4>
+                <p><strong>Purpose:</strong> Handles creator fees and buybacks</p>
+                <ul class="styled-list">
+                    <li>Accumulates trading fees</li>
+                    <li>Allows claiming of fees</li>
+                    <li>Tracks fee distributions</li>
+                    <li>Integrates with buyback mechanism</li>
+                </ul>
+            </div>
+
+            <h3>Program Derived Addresses (PDAs)</h3>
+            <div class="formula">
+                <strong>PDA Generation:</strong><br>
+                PDA = find_program_address([<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;b"game_state",<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;player_pubkey.as_ref(),<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;game_id.to_le_bytes().as_ref()<br>
+                ], program_id)<br><br>
+                
+                This creates deterministic addresses for:<br>
+                • Player game accounts<br>
+                • Fee collection accounts<br>
+                • Treasury accounts<br>
+                • Escrow accounts
+            </div>
+
+            <h3>Account Structure</h3>
+            <div class="tech-spec">
+                <h4>Game Account</h4>
+                <div class="formula">
+                    pub struct GameAccount {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub player: Pubkey,        // 32 bytes<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub bet_amount: u64,       // 8 bytes<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub game_type: u8,         // 1 byte<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub outcome: u16,          // 2 bytes<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub payout: u64,           // 8 bytes<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub timestamp: i64,        // 8 bytes<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub signature: [u8; 64],   // 64 bytes<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;pub is_settled: bool,      // 1 byte<br>
+                    }<br>
+                    Total: 124 bytes
+                </div>
+            </div>
+
+            <h3>Security Features</h3>
+            <ul class="styled-list">
+                <li><strong>Signer Verification:</strong> All transactions require valid signatures</li>
+                <li><strong>Balance Checks:</strong> Prevents overdrafts and insufficient funds</li>
+                <li><strong>Reentrancy Guards:</strong> Protects against recursive calls</li>
+                <li><strong>Integer Overflow Protection:</strong> Safe math operations</li>
+                <li><strong>Access Control:</strong> Only authorized accounts can execute functions</li>
+                <li><strong>Immutable Logic:</strong> Contract code cannot be changed after deployment</li>
+            </ul>
+
+            <h3>Audit & Verification</h3>
+            <div class="info-box">
+                <h4>Contract Verification</h4>
+                <p>All smart contracts are:</p>
+                <ul class="styled-list">
+                    <li>✅ Open source (code publicly available)</li>
+                    <li>✅ Audited by third-party security firms</li>
+                    <li>✅ Verified on Solana blockchain explorer</li>
+                    <li>✅ Tested extensively on devnet</li>
+                    <li>✅ Compliant with Solana program standards</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECURITY SECTION -->
+        <section id="security">
+            <h2>🔒 Security & Safety</h2>
+
+            <h3>Security Measures</h3>
+            
+            <div class="card">
+                <h4>1. Wallet Security</h4>
+                <ul class="styled-list">
+                    <li><strong>Non-custodial:</strong> We never hold your private keys</li>
+                    <li><strong>Transaction Signing:</strong> Every action requires your approval</li>
+                    <li><strong>Phantom Integration:</strong> Industry-standard secure wallet</li>
+                    <li><strong>No Backend Wallets:</strong> No server-side key storage</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>2. Smart Contract Security</h4>
+                <ul class="styled-list">
+                    <li><strong>Audited Code:</strong> Third-party security audits</li>
+                    <li><strong>Battle-tested:</strong> Uses SPL Token standard</li>
+                    <li><strong>Reentrancy Protection:</strong> Guards against attacks</li>
+                    <li><strong>Safe Math:</strong> Overflow/underflow protection</li>
+                    <li><strong>Access Control:</strong> Restricted admin functions</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>3. Backend Security</h4>
+                <ul class="styled-list">
+                    <li><strong>API Key Authentication:</strong> Secure endpoint access</li>
+                    <li><strong>Rate Limiting:</strong> Prevents abuse and spam</li>
+                    <li><strong>Input Validation:</strong> All inputs sanitized</li>
+                    <li><strong>HTTPS Only:</strong> Encrypted connections</li>
+                    <li><strong>CORS Protection:</strong> Restricts cross-origin requests</li>
+                </ul>
+            </div>
+
+            <h3>Responsible Gaming</h3>
+            <div class="info-box">
+                <h4>Player Protection</h4>
+                <ul class="styled-list">
+                    <li><strong>Transparent Odds:</strong> All probabilities publicly documented</li>
+                    <li><strong>Bet Limits:</strong> Minimum and maximum bet enforcement</li>
+                    <li><strong>Balance Validation:</strong> Cannot bet more than you have</li>
+                    <li><strong>Transaction History:</strong> Full record of all bets</li>
+                    <li><strong>Verifiable Results:</strong> Every game can be audited</li>
+                </ul>
+            </div>
+
+            <h3>Risk Disclosure</h3>
+            <div class="warning" style="background: rgba(255, 0, 255, 0.1); padding: 20px; border-radius: 10px; border: 2px solid #ff00ff;">
+                <h4>⚠️ Important Notice</h4>
+                <ul class="styled-list">
+                    <li>Gambling involves risk of monetary loss</li>
+                    <li>House edge means long-term expected loss</li>
+                    <li>Never bet more than you can afford to lose</li>
+                    <li>Games are for entertainment purposes</li>
+                    <li>Smart contracts are immutable once deployed</li>
+                    <li>Blockchain transactions are irreversible</li>
+                    <li>Cryptocurrency values fluctuate</li>
+                </ul>
+            </div>
+
+            <h3>Best Practices</h3>
+            <ul class="styled-list">
+                <li><strong>Secure Your Wallet:</strong> Keep your seed phrase safe and private</li>
+                <li><strong>Verify Contracts:</strong> Check contract addresses before interacting</li>
+                <li><strong>Start Small:</strong> Test with small amounts first</li>
+                <li><strong>Check Balances:</strong> Verify you have enough tokens + SOL for fees</li>
+                <li><strong>Verify Transactions:</strong> Always check on Solscan after playing</li>
+                <li><strong>Use Official Links:</strong> Avoid phishing sites</li>
+                <li><strong>Keep Software Updated:</strong> Update Phantom wallet regularly</li>
+            </ul>
+
+            <h3>Emergency Procedures</h3>
+            <div class="card">
+                <h4>If Something Goes Wrong</h4>
+                <ol class="styled-list">
+                    <li>Check transaction on Solscan.io with signature</li>
+                    <li>Verify transaction status (success/failed)</li>
+                    <li>Check your wallet balance</li>
+                    <li>Review game logs in backend</li>
+                    <li>Contact support with transaction signature</li>
+                    <li>Do not share your private keys with anyone</li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="footer">
+            <h3>📚 all-in.wtf Documentation</h3>
+            <p>Version 1.0 - Last Updated: January 2026</p>
+            <p>All games are provably fair and verifiable on the Solana blockchain.</p>
+            <p style="margin-top: 20px; color: #00ff88;">
+                For support or questions, verify all transactions on 
+                <a href="https://solscan.io" target="_blank" style="color: #00ff88;">Solscan.io</a>
+            </p>
+            <p style="margin-top: 10px; color: #888; font-size: 0.9em;">
+                🎰 <a href="https://all-in.wtf" style="color: #ff00ff; text-decoration: none;">all-in.wtf</a> - Where the odds are in your favor
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        // Animate probability bars on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.dataset.width;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.probability-fill').forEach(bar => {
+            observer.observe(bar);
+        });
+    </script>
+</body>
+</html>
